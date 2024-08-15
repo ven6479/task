@@ -27,25 +27,29 @@ def search(text: str) -> tuple[Optional[datetime], Optional[datetime]]:
     return None, None
 
 
-def main(file_path: str) -> int:
-    with open(f'{file_path}') as file:
-
-        operators = []
-
+def read_generator_files(file_path: str) -> str:
+    with open(file_path) as file:
         for line in file:
-            start, end = search(line)
+            yield line
 
-            if not (start and end):
-                continue
 
-            for i in range(len(operators)):
-                if operators[i] <= start:
-                    operators[i] = end
-                    break
-            else:
-                operators.append(end)
+def main(file_path: str) -> int:
+    operators = []
 
-        return len(operators)
+    for line in read_generator_files(file_path):
+        start, end = search(line)
+
+        if not (start and end):
+            continue
+
+        for i in range(len(operators)):
+            if operators[i] <= start:
+                operators[i] = end
+                break
+        else:
+            operators.append(end)
+
+    return len(operators)
 
 
 if __name__ == '__main__':
