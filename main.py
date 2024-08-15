@@ -32,12 +32,8 @@ def main(file_path: str) -> int:
 
         operators = []
 
-        for start, end in sorted(
-                (
-                        search(line) for line in file
-                ),
-                key=lambda x: x[0]
-        ):
+        for line in file:
+            start, end = search(line)
 
             if not (start and end):
                 continue
